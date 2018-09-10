@@ -19,7 +19,6 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 import lombok.Getter;
 import lombok.Setter;
-import ucar.nc2.util.xml.Parse;
 
 public class WebCrawlingRobo extends WebCrawler {
 

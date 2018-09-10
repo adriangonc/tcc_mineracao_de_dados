@@ -23,30 +23,29 @@ public class AtividadeServiceJPADao implements AtividadeService {
 	@Override
 	public void inserirAtividade(TbAtividade atividade) {
 		em.persist(atividade);
-		
+
 	}
 
 	@Override
 	public void removerAtividade(final int id) {
-			try {
-				TbAtividade atividade = getById(id);
-				em.remove(atividade);	
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		
+		try {
+			TbAtividade atividade = getById(id);
+			em.remove(atividade);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
 	}
-	
-	//@Override
+
+	// @Override
 	public TbAtividade getById(final int id) {
 		return em.find(TbAtividade.class, id);
 	}
 
-
 	@Override
 	public void alterarAtividade(TbAtividade atividade) {
 		em.merge(atividade);
-		
+
 	}
-		
+
 }
