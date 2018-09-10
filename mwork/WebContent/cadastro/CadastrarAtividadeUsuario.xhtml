@@ -1,0 +1,224 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+<h:head>
+	<title>Cadastrar atividades</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../css/default.css"></link>
+</h:head>
+
+<h:body>
+	<f:loadBundle var="msg" basename="br.com.mwork.util.mensagens_pt_BR" />
+
+	<p:growl autoUpdate="true" id="message" />
+	<p:menubar>
+		<f:facet name="options">
+			<h:graphicImage value="../imagens/logoMini.png"
+				styleClass="logoMenuBar" />
+		</f:facet>
+		<p:menuitem value="CADASTRO DE ATIVIDADES PRESTADAS" url="#"
+			style="margin-left:600;font-weight:bold"></p:menuitem>
+		<p:submenu icon="fa fa-user" label="#{crudUsuarioMB.username}"
+			style="float:right">
+			<p:menuitem value="Alterar Senha" url="../TrocarSenha.xhtml"
+				icon="ui-icon ui-icon-key" />
+			<p:menuitem value="Sair"
+				url="${pageContext.request.contextPath}/logout"
+				icon="ui-icon ui-icon-power" />
+		</p:submenu>
+	</p:menubar>
+	<h:panelGrid columns="2" columnClasses="vertTop, vertTop"
+		style="height:80%">
+		<h:form>
+			<ui:include src="/menu.xhtml" />
+		</h:form>
+
+		<h:panelGrid columnClasses="vertTop">
+			<p:fieldset>
+				<h:form id="formCadastroParametro">
+					<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+
+						<p:outputLabel value="#{msg['label.atividade']}"
+							styleClass="textoM" />
+						<p:selectOneMenu id="atividade"
+							value="#{cadastroUsuarioMB.cidadeSelecionada}"
+							style="width:125px" required="true"
+							requiredMessage="E necessário selecionar uma atividade!">
+							<!-- <f:selectItem itemLabel="Selecione uma atividade" itemValue="" />
+							<f:selectItems value="#{cadastroUsuarioMB.cidades}" /> -->
+							<f:selectItem itemLabel="Selecione..." itemValue="" />
+							<f:selectItem itemLabel="Fotografo" itemValue="2" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="#{msg['label.descricao.atividade']}"
+							styleClass="textoM" />
+						<h:panelGrid columns="1">
+							<p:inputTextarea rows="6" cols="60" maxlength="1024"
+								styleClass="txtImputArea" counter="display"
+								value="#{crudParametrosNegocioMB.parametro.parametroValor}"
+								required="true" requiredMessage="O campo Valor*: e obrigatório!">
+							</p:inputTextarea>
+							<h:panelGrid columns="2">
+								<h:outputText id="display" styleClass="txtCinza10" />
+								<h:outputText value="#{msg['label.caracteres.restantes']}"
+									styleClass="txtCinza10" />
+							</h:panelGrid>
+						</h:panelGrid>
+
+						<p:outputLabel value="#{msg['label.upload.imagem']}"
+							styleClass="textoM" />
+						<p:fileUpload
+							fileUploadListener="#{fileUploadView.handleFileUpload}"
+							mode="advanced" dragDropSupport="true" update="messages"
+							sizeLimit="1000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+							uploadLabel="Enviar" cancelLabel="Cancelar envio" fileLimit="3"
+							label="Selecionar imagem" />
+
+						<p:growl id="messages" showDetail="true" />
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="0">
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+						<p:commandButton value="#{msg['botao.salvar']}"
+							icon="ui-icon ui-icon-disk"
+							actionListener="#{crudParametrosNegocioMB.inserirParametro()}"
+							update="formTable:singleDT formCadastroParametro message @form" />
+
+						<p:commandButton value="#{msg['botao.limpar']}" process="@this"
+							actionListener="#{crudParametrosNegocioMB.limpar()}"
+							update="formCadastroParametro @form"
+							icon="ui-icon ui-icon-document" />
+					</h:panelGrid>
+				</h:form>
+			</p:fieldset>
+			<p:separator />
+			<h:form id="formTable">
+				<p:dataTable id="singleDT" var="parametros"
+					styleClass="fonte-tamanho-12"
+					value="#{crudAtividadeMB.listaAtividadeUsuario}"
+					selectionMode="single" rowKey="#{parametros.id}"
+					paginator="true" rows="10"
+					emptyMessage="Nenhum registro encontrado"
+					selection="#{crudAtividadeMB.atividadeSelecionadaUsuario}"
+					widgetVar="tableResults" sortBy="#{parametros.id}">
+
+					
+					<p:column filterBy="#{parametros.id.idAtividade}"
+						filterMatchMode="contains" headerText="#{msg['colun.atividade']}"
+						style="width:230px" styleClass="fonte-tamanho-12">
+						<h:outputText value="#{parametros.id.idAtividade}" />
+					</p:column>
+
+					<p:column filterBy="#{parametros.descricaoAtividade}"
+						filterMatchMode="contains" headerText="#{msg['colun.descricao.atividade']}"
+						styleClass="fonte-tamanho-12">
+						<h:outputText value="#{parametros.descricaoAtividade}" />
+					</p:column>
+
+					<p:column style="width:40px;text-align: center">
+						<p:commandButton style="width:18px;height:18px"
+							update="formAlterar" oncomplete="PF('alterarDlg').show()"
+							icon="ui-icon-pencil" title="Alterar">
+							<f:setPropertyActionListener value="#{parametros}"
+								target="#{crudParametrosNegocioMB.parametroSelecionado}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width:40px;text-align: center">
+						<p:commandButton style="width:18px;height:18px"
+							oncomplete="PF('excluirDlg').show()" icon="ui-icon-trash"
+							title="Deletar">
+							<f:setPropertyActionListener value="#{parametros}"
+								target="#{crudParametrosNegocioMB.parametroSelecionado}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+
+			<p:dialog header="Excluir" width="25%" height="50%"
+				widgetVar="excluirDlg" modal="true" position="center"
+				resizable="false">
+				<h:form styleClass="fonte-tamanho-12">
+					<img align="left" width="48px" height="48px"
+						src="../imagens/Delete.png" />
+					<h:outputLabel
+						value="Tem certeza que deseja excluir o registro selecionado?"></h:outputLabel>
+					<h:panelGrid columns="2" style="margin-left: 34%; margin-top: 10%;">
+						<p:commandButton update="formTable:singleDT"
+							style="font-size:12px" value="#{msg['botao.confirmar']}"
+							icon="ui-icon-trash" oncomplete="PF('excluirDlg').hide()"
+							actionListener="#{crudParametrosNegocioMB.removerParametro()}" />
+						<p:commandButton style="font-size:12px"
+							value="#{msg['botao.calcelar']}"
+							icon="ui-icon-arrowreturnthick-1-w"
+							oncomplete="PF('excluirDlg').hide()" />
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+
+			<p:dialog header="Alterar Registro" widgetVar="alterarDlg"
+				modal="true" styleClass="fonte-tamanho-12" showEffect="fade"
+				hideEffect="fade" minHeight="200" minWidth="400" resizable="false">
+
+				<p:fieldset style="margin-bottom:20px">
+					<h:form id="formAlterar">
+						<h:panelGrid cellpadding="5" columns="2"
+							styleClass="fonte-tamanho-12">
+							<p:outputLabel value="#{msg['label.descricao']}" />
+							<h:panelGrid>
+								<h:inputText disabled="false" style="width:280px" maxlength="60"
+									styleClass="fonte-tamanho-12"
+									value="#{crudParametrosNegocioMB.parametroSelecionado.parametroDescricao}"
+									required="true"
+									requiredMessage="O campo Descrição*: e obrigatório!" />
+							</h:panelGrid>
+
+							<p:outputLabel value="#{msg['label.valor']}" />
+							<h:panelGrid>
+								<p:inputTextarea rows="6" cols="50" maxlength="1024"
+									styleClass="txtImputArea" counter="display"
+									value="#{crudParametrosNegocioMB.parametroSelecionado.parametroValor}"
+									required="true"
+									requiredMessage="O campo Valor*: e obrigatório!">
+								</p:inputTextarea>
+
+								<h:panelGrid columns="2">
+									<h:outputText id="display" styleClass="txtCinza10" />
+									<h:outputText value="#{msg['label.caracteres.restantes']}"
+										styleClass="txtCinza10" />
+								</h:panelGrid>
+							</h:panelGrid>
+
+						</h:panelGrid>
+						<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+							<p:commandButton value="#{msg['botao.alterar']}"
+								update="formTable:singleDT formAlterar"
+								actionListener="#{crudParametrosNegocioMB.alterarParametro()}"
+								oncomplete="PF('alterarDlg').hide()"
+								icon="ui-icon ui-icon-pencil" />
+
+							<p:commandButton value="#{msg['botao.calcelar']}"
+								update="formTable:singleDT formAlterar"
+								oncomplete="PF('alterarDlg').hide()"
+								icon="ui-icon-arrowreturnthick-1-w" immediate="true" />
+						</h:panelGrid>
+					</h:form>
+				</p:fieldset>
+
+			</p:dialog>
+
+		</h:panelGrid>
+
+	</h:panelGrid>
+
+</h:body>
+</html>

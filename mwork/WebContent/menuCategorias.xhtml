@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="./css/default.css"></link>
+	<h:outputStylesheet name="webjars/font-awesome/4.6.3/css/font-awesome.css"></h:outputStylesheet>
+	<f:loadBundle var="msg" basename="br.com.mwork.util.mensagens_pt_BR" />
+</h:head>
+
+<p:panelMenu styleClass="menuLateral">
+	<p:submenu  expanded="true" label="> Categorias"  >
+		<p:menuitem value="#{msg['categoria.baba']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.barmam']}" url="#" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.carpinteiro']}" url="#" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.cerimonial']}" url="#" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.conzinheiro']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.churrasqueiro']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.cuidador']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.designer.grafico']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.diarista']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.eletricista']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.enfermeiro']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.garcon']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.jardineiro']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.programador']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.web.designer']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.tecnico.informatica']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.soldador']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.montador.moveis']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.recepcionista']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.pedreiro']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.pintor']}" url="" icon="fa fa-search"/>
+		<p:menuitem value="#{msg['categoria.moto.taxi']}" url="" icon="fa fa-search"/>
+	</p:submenu>
+
+</p:panelMenu>
+</html>

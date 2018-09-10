@@ -1,0 +1,170 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+<h:head>
+	<title>Cadastro e edição de atividades</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../css/default.css"></link>
+</h:head>
+
+<h:body>
+	<f:loadBundle var="msg" basename="br.com.mwork.util.mensagens_pt_BR" />
+
+	<p:growl autoUpdate="true" id="message" />
+	<p:menubar>
+		<f:facet name="options">
+			<h:graphicImage value="../imagens/logoMini.png"
+				styleClass="logoMenuBar" />
+		</f:facet>
+		<p:menuitem value="CADASTRO DE ATIVIDADES" url="#"
+			style="margin-left:600;font-weight:bold"></p:menuitem>
+		<p:submenu icon="fa fa-user" label="#{crudUsuarioMB.username}"
+			style="float:right">
+			<p:menuitem value="Alterar Senha" url="../TrocarSenha.xhtml"
+				icon="ui-icon ui-icon-key" />
+			<p:menuitem value="Sair"
+				url="${pageContext.request.contextPath}/logout"
+				icon="ui-icon ui-icon-power" />
+		</p:submenu>
+	</p:menubar>
+	<h:panelGrid columns="2" columnClasses="vertTop, vertTop"
+		style="height:80%">
+		<h:form>
+			<ui:include src="/menu.xhtml" />
+		</h:form>
+
+		<h:panelGrid columnClasses="vertTop">
+			<p:fieldset>
+				<h:form id="formCadastroParametro">
+					<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+
+						<p:outputLabel value="#{msg['label.descricao.atividade']}"
+							styleClass="textoM" />
+						<h:panelGrid>
+							<p:inputText maxlength="60" style="width:300px"
+								styleClass="textoM"
+								value="#{crudAtividadeMB.atividadeSelecionada.nomeAtividade}"
+								required="true"
+								requiredMessage="O campo Descrição*: e obrigatório!" />
+						</h:panelGrid>
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+						<p:commandButton value="#{msg['botao.salvar']}"
+							icon="ui-icon ui-icon-disk"
+							actionListener="#{crudAtividadeMB.inserirAtividade()}"
+							update="formTable:singleDT formCadastroParametro message" />
+
+						<p:commandButton value="#{msg['botao.limpar']}" process="@this"
+							actionListener="#{crudAtividadeMB.limpar()}"
+							update="formCadastroParametro" icon="ui-icon ui-icon-document" />
+					</h:panelGrid>
+				</h:form>
+			</p:fieldset> 
+			<p:separator />
+			 <h:form id="formTable">
+				<p:dataTable id="singleDT" var="parametros"
+					styleClass="fonte-tamanho-12"
+					value="#{crudAtividadeMB.listaAtividade}" selectionMode="single"
+					rowKey="#{parametros.idAtividade}" paginator="true" rows="40"
+					emptyMessage="Nenhum registro encontrado"
+					selection="#{crudAtividadeMB.atividadeSelecionada}"
+					widgetVar="tableResults" sortBy="#{parametros.nomeAtividade}" >
+
+					<p:column headerText="#{msg['colun.id']}"
+						styleClass="fonte-tamanho-12" width="50">
+						<h:outputText value="#{parametros.idAtividade}" />
+					</p:column>
+					<p:column filterBy="#{parametros.nomeAtividade}"
+						filterMatchMode="contains" headerText="#{msg['colun.descricao']}"
+						style="width:250px" styleClass="fonte-tamanho-12">
+						<h:outputText value="#{parametros.nomeAtividade}" />
+					</p:column>
+
+					<p:column style="width:40px;text-align: center">
+						<p:commandButton style="width:18px;height:18px"
+							update="formAlterar" oncomplete="PF('alterarDlg').show()"
+							icon="ui-icon-pencil" title="Alterar">
+							<f:setPropertyActionListener value="#{parametros}"
+								target="#{crudAtividadeMB.atividadeSelecionada}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width:40px;text-align: center">
+						<p:commandButton style="width:18px;height:18px"
+							oncomplete="PF('excluirDlg').show()" icon="ui-icon-trash"
+							title="Deletar">
+							<f:setPropertyActionListener value="#{parametros}"
+								target="#{crudAtividadeMB.atividadeSelecionada}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
+
+
+			<p:dialog header="Excluir" width="25%" height="50%"
+				widgetVar="excluirDlg" modal="true" position="center"
+				resizable="false">
+				<h:form styleClass="fonte-tamanho-12">
+					<img align="left" width="48px" height="48px"
+						src="../imagens/Delete.png" />
+					<h:outputLabel
+						value="Tem certeza que deseja excluir o registro selecionado?"></h:outputLabel>
+					<h:panelGrid columns="2" style="margin-left: 34%; margin-top: 10%;">
+						<p:commandButton update="formTable:singleDT"
+							style="font-size:12px" value="#{msg['botao.confirmar']}"
+							icon="ui-icon-trash" oncomplete="PF('excluirDlg').hide()"
+							actionListener="#{crudAtividadeMB.removerAtividade()}" />
+						<p:commandButton style="font-size:12px"
+							value="#{msg['botao.calcelar']}"
+							icon="ui-icon-arrowreturnthick-1-w"
+							oncomplete="PF('excluirDlg').hide()" />
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+
+			<p:dialog header="Alterar Registro" widgetVar="alterarDlg"
+				modal="true" styleClass="fonte-tamanho-12" showEffect="fade"
+				hideEffect="fade" minHeight="200" minWidth="400" resizable="false">
+
+				<p:fieldset style="margin-bottom:20px">
+					<h:form id="formAlterar">
+						<h:panelGrid cellpadding="5" columns="2"
+							styleClass="fonte-tamanho-12">
+							<p:outputLabel value="#{msg['label.descricao']}" />
+							<h:inputText disabled="false" style="width:240px" maxlength="120"
+								value="#{crudAtividadeMB.atividadeSelecionada.nomeAtividade}"
+								required="true"
+								requiredMessage="O campo Descrição*: e obrigatório!" />
+
+						</h:panelGrid>
+						<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+							<p:commandButton value="#{msg['botao.alterar']}"
+								update="formTable:singleDT formAlterar"
+								actionListener="#{crudAtividadeMB.alterarAtividade()}"
+								oncomplete="PF('alterarDlg').hide()"
+								icon="ui-icon ui-icon-pencil" />
+
+							<p:commandButton value="#{msg['botao.calcelar']}"
+								update="formTable:singleDT formAlterar"
+								oncomplete="PF('alterarDlg').hide()"
+								icon="ui-icon-arrowreturnthick-1-w" immediate="true" />
+						</h:panelGrid>
+					</h:form>
+				</p:fieldset>
+
+			</p:dialog> 
+
+
+		</h:panelGrid>
+
+	</h:panelGrid>
+
+</h:body>
+</html>

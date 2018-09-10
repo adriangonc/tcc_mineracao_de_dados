@@ -1,0 +1,97 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+<h:head>
+	<title>Cadastro e edição de usuário</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="./css/default.css"></link>
+</h:head>
+
+<h:body>
+	<f:loadBundle var="msg" basename="br.com.mwork.util.mensagens_pt_BR" />
+
+	<p:growl autoUpdate="true" id="message" />
+	<p:menubar>
+		<f:facet name="options">
+			<h:graphicImage value="/imagens/logoMini.png"
+				styleClass="logoMenuBar" />
+		</f:facet>
+		<p:menuitem value="ALTERAR SENHA" url="#"
+			style="margin-left:600;font-weight:bold"></p:menuitem>
+		<p:submenu icon="fa fa-user"
+			label="#{crudUsuarioMB.username}" style="float:right">
+			<p:menuitem value="Alterar Senha"
+				url="${pageContext.request.contextPath}/TrocarSenha.xhtml"
+				icon="ui-icon ui-icon-key" />
+			<p:menuitem value="Sair"
+				url="${pageContext.request.contextPath}/logout"
+				icon="ui-icon ui-icon-power" />
+		</p:submenu>
+	</p:menubar>
+	<h:panelGrid columns="2" columnClasses="vertTop, vertTop"
+		style="height:80%">
+		<h:form>
+			<!-- <ui:include src="/menu.xhtml" /> -->
+		</h:form>
+
+		<h:panelGrid columnClasses="vertTop">
+			<p:fieldset>
+				<h:form id="formSenha">
+					<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+
+						<p:outputLabel value="#{msg['label.senha.atual']}"
+							styleClass="textoM" />
+						<p:password maxlength="20" value="#{recuperaSenhaMB.senhaAtual}"
+							required="true"
+							requiredMessage="E necessario digitar a senha atual!"
+							type="password" />
+
+						<p:outputLabel value="#{msg['label.senha.nova']}"
+							styleClass="textoM" />
+						<p:password value="#{recuperaSenhaMB.senhaNova}" maxlength="20"
+							required="true" feedback="true" promptLabel="Digite a senha"
+							weakLabel="Senha fraca" goodLabel="Senha mediana"
+							strongLabel="Senha forte" id="senha1" match="senha2"
+							validatorMessage="As duas senhas não conferem!"
+							requiredMessage="E necessario digitar a nova senha!">
+						</p:password>
+
+						<p:outputLabel value="#{msg['label.senha.repetida']}"
+							styleClass="textoM" />
+						<p:password value="#{recuperaSenhaMB.usuarioSelecionado.password}"
+							maxlength="20" required="true" feedback="true"
+							promptLabel="Digite a senha" weakLabel="Senha fraca"
+							goodLabel="Senha mediana" strongLabel="Senha forte" id="senha2"
+							requiredMessage="E necessario repetir a nova senha!">
+						</p:password>
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="0">
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+						<p:commandButton value="Alterar" icon="ui-icon ui-icon-disk"
+							actionListener="#{recuperaSenhaMB.alterarSenhaUsuario()}"
+							update="formSenha" />
+
+						<p:commandButton value="#{msg['botao.limpar']}" process="@this"
+							actionListener="#{crudUsuarioMB.limpar()}"
+							update="formSenha @form" icon="ui-icon ui-icon-document" />
+					</h:panelGrid>
+				</h:form>
+
+			</p:fieldset>
+
+
+		</h:panelGrid>
+
+	</h:panelGrid>
+
+</h:body>
+</html>

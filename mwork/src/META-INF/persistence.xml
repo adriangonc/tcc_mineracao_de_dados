@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+	version="2.1">
+
+	<persistence-unit name="mwork">
+
+		<jta-data-source>java:/MWorkDS</jta-data-source>
+
+		<class>br.com.mwork.entities.Parametro</class>
+
+		<class>br.com.mwork.entities.User</class>
+		<class>br.com.mwork.entities.TbCidade</class>
+		<class>br.com.mwork.entities.TbEstado</class>
+		<class>br.com.mwork.entities.ViewCidade</class>
+		<class>br.com.mwork.entities.TbAtividade</class>
+		<class>br.com.mwork.entities.TbInformacoesUsuario</class>
+		<class>br.com.mwork.entities.TbMensagen</class>
+		<class>br.com.mwork.entities.TbRedesSociaisUsuario</class>
+		<class>br.com.mwork.entities.TbAtividadeUsuario</class>
+		<class>br.com.mwork.entities.TbAtividadeUsuarioPK</class>
+		<class>br.com.mwork.entities.ViewPrestador</class>
+		<class>br.com.mwork.entities.TbDadosMinerado</class>
+
+		<properties>
+			<property name="jboss.entity.manager.jndi.name" value="java:/mworkEntityManager" />
+
+			<!-- desenv -->
+			<!-- <property name="hibernate.show_sql" value="true"/> <property name="hibernate.format_sql" 
+				value="true"/> -->
+
+		</properties>
+
+	</persistence-unit>
+
+</persistence>

@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+<h:head>
+	<title>Acesso não autorizado</title>
+	<meta charset="UTF-8" />
+	<meta HTTP-EQUIV="EXPIRES" CONTENT="0" />
+	<meta HTTP-EQUIV="pragma" CONTENT="nocache" />
+	<link rel="stylesheet" type="text/css" href="./css/default.css"></link>
+</h:head>
+
+<h:body>
+	<f:loadBundle var="msg" basename="br.com.mwork.util.mensagens_pt_BR" />
+
+	<p:growl autoUpdate="true" id="message" />
+	<p:menubar>
+		<p:menuitem value="Acesso não autorizado" url="#"
+			style="margin-left:600;font-weight:bold"></p:menuitem>
+		<p:submenu icon="ui-icon ui-icon-person"
+			label="#{crudUsuarioMB.username}" style="float:right">
+			<p:menuitem value="Início" url="/home.xhtml"
+				icon="ui-icon ui-icon-home" />
+			<p:menuitem value="Alterar Senha" url="../TrocarSenha.xhtml"
+				icon="ui-icon ui-icon-key" />
+			<p:menuitem value="Sair"
+				url="${pageContext.request.contextPath}/logout"
+				icon="ui-icon ui-icon-power" />
+		</p:submenu>
+	</p:menubar>
+	<h:panelGrid columns="1" columnClasses="vertTop, vertTop"
+		style="height:80%">
+		<h:form styleClass="alinharCentro">
+			<p:fieldset legend="Erro de acesso" style="margin-bottom:20px">
+				<h:panelGrid columns="2" cellpadding="5">
+					<img align="left" width="64px" height="64px"
+						src="#{request.contextPath}/imagens/access_denied.png" />
+					<h:outputText
+						value="Você não possui acesso a essa área do sistema por determinações de segurança. Caso necessite de acesso a essa área entre em contato com o administrador do sistema." />
+				</h:panelGrid>
+
+			</p:fieldset>
+			<h:commandButton action="/pesquisa/prestador.xhtml" value="Voltar a página de pesquisa" />
+		</h:form>
+
+	</h:panelGrid>
+
+</h:body>
+</html>

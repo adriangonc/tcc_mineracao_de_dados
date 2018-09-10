@@ -1,0 +1,296 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+<h:head>
+	<title>Edição de usuário do sistema</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../css/default.css"></link>
+</h:head>
+
+<h:body>
+	<f:loadBundle var="msg" basename="br.com.mwork.util.mensagens_pt_BR" />
+
+	<p:growl autoUpdate="true" id="message" life="10000" />
+	<p:menubar>
+		<f:facet name="options">
+			<h:graphicImage value="../imagens/logoMini.png"
+				styleClass="logoMenuBar" />
+		</f:facet>
+		<p:menuitem value="ATUALIZAÇÃO DE CADASTRO DE USUÁRIOS" url="#"
+			style="margin-left:600;font-weight:bold">
+		</p:menuitem>
+		<p:submenu icon="fa fa-user" label="#{crudUsuarioMB.username}"
+			style="float:right">
+			<p:menuitem value="Página inicial" url="/pesquisa/prestador.xhtml"
+				icon="ui-icon ui-icon-home" />
+			<p:menuitem value="Sair"
+				url="${pageContext.request.contextPath}/logout"
+				icon="ui-icon ui-icon-power" />
+
+
+		</p:submenu>
+	</p:menubar>
+	<h:panelGrid columns="2" columnClasses="vertTop, vertTop"
+		style="height:80%">
+		<h:form>
+
+		</h:form>
+
+		<h:panelGrid columnClasses="vertTop">
+			<p:fieldset>
+				<h:form id="formCadastroParametro">
+					<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+
+						<p:outputLabel value="#{msg['label.email']}" styleClass="textoM" />
+						<p:inputText id="email" maxlength="100" style="width:300px"
+							value="#{atualizaCadastroUsuarioMB.usuario.email}" required="true"
+							requiredMessage="Insira um email para o usuário!"
+							validatorMessage="Formato inválido de email!">
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+						</p:inputText>
+
+						<p:outputLabel value="#{msg['label.nome']}" styleClass="textoM" />
+						<p:inputText maxlength="60" style="width:300px"
+							value="#{atualizaCadastroUsuarioMB.usuario.name}" required="true"
+							requiredMessage="Insira um nome para o usuário!" />
+
+						<!-- <p:spacer height="10px"></p:spacer>
+						<p:spacer height="10px"></p:spacer> -->
+
+						<!-- <p:outputLabel value="#{msg['label.senha']}" styleClass="textoM" />
+						<p:password value="#{recuperaSenhaMB.senhaNova}" maxlength="20"
+							required="true" feedback="true" promptLabel="Digite a senha"
+							weakLabel="Senha fraca" goodLabel="Senha mediana"
+							strongLabel="Senha forte" id="senha1" match="senha2"
+							validatorMessage="As duas senhas não conferem!"
+							requiredMessage="E necessario digitar a nova senha!">
+						</p:password>
+
+						<p:outputLabel value="#{msg['label.repetir.senha.cadastro']}"
+							styleClass="textoM" />
+						<p:password
+							value="#{cadastroUsuarioMB.usuarioSelecionado.password}"
+							maxlength="20" required="true" feedback="true"
+							promptLabel="Digite a senha" weakLabel="Senha fraca"
+							goodLabel="Senha mediana" strongLabel="Senha forte" id="senha2"
+							requiredMessage="E necessario repetir a nova senha!">
+						</p:password> -->
+						
+						<p:spacer height="10px"></p:spacer>
+						<p:outputLabel value="#{msg['label.telefone']}" />
+						<p:inputText maxlength="256"
+							value="#{atualizaCadastroUsuarioMB.informacoesUsuarioSistema.telefone}"
+							required="true" requiredMessage="Insira um telefone para o usuário!" />
+
+						<p:outputLabel value="#{msg['label.estados']}" styleClass="textoM" />
+
+						<p:selectOneMenu id="estados"
+							value="#{atualizaCadastroUsuarioMB.estadoSelecionado}"
+							style="width:125px" required="false"
+							requiredMessage="E necessário selecionar um estado!">
+							<f:selectItem itemLabel="Selecione..." itemValue="" />
+							<f:selectItem itemLabel="Acre - AC" itemValue="2" />
+							<f:selectItem itemLabel="Alagoas - AL" itemValue="14" />
+							<f:selectItem itemLabel="Amapá - AP" itemValue="6" />
+							<f:selectItem itemLabel="Amazonas - AM" itemValue="3" />
+							<f:selectItem itemLabel="Bahia - BA" itemValue="16" />
+							<f:selectItem itemLabel="Ceará - CE" itemValue="10" />
+							<f:selectItem itemLabel="Distrito Federal - DF" itemValue="27" />
+							<f:selectItem itemLabel="Espírito Santo	- ES" itemValue="18" />
+							<f:selectItem itemLabel="Goiás - GO" itemValue="26" />
+							<f:selectItem itemLabel="Maranhão - MA" itemValue="8" />
+							<f:selectItem itemLabel="Mato Grosso - MT" itemValue="25" />
+							<f:selectItem itemLabel="Mato Grosso do Sul	- MS" itemValue="24" />
+							<f:selectItem itemLabel="Minas Gerais - MG" itemValue="17" />
+							<f:selectItem itemLabel="Pará - PA" itemValue="5" />
+							<f:selectItem itemLabel="Paraíba - PB" itemValue="12" />
+							<f:selectItem itemLabel="Paraná - PR" itemValue="21" />
+							<f:selectItem itemLabel="Pernambuco	- PE" itemValue="13" />
+							<f:selectItem itemLabel="Piauí - PI" itemValue="9" />
+							<f:selectItem itemLabel="Rio de Janeiro	- RJ" itemValue="19" />
+							<f:selectItem itemLabel="Rio Grande do Norte - RN" itemValue="11" />
+							<f:selectItem itemLabel="Rio Grande do Sul	- RS" itemValue="23" />
+							<f:selectItem itemLabel="Rondônia - RO" itemValue="1" />
+							<f:selectItem itemLabel="Roraima - RR" itemValue="4" />
+							<f:selectItem itemLabel="Santa Catarina	- SC" itemValue="22" />
+							<f:selectItem itemLabel="São Paulo	- SP" itemValue="20" />
+							<f:selectItem itemLabel="Sergipe - SE" itemValue="15" />
+							<f:selectItem itemLabel="Tocantins - TO" itemValue="7" />
+							<f:selectItem itemLabel="Exterior" itemValue="28" />
+							<p:ajax event="change" update="cidades"
+								listener="#{atualizaCadastroUsuarioMB.filtraCidadePorEstado()}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="#{msg['label.cidade']}" styleClass="textoM" />
+						<p:selectOneMenu id="cidades"
+							disabled="#{atualizaCadastroUsuarioMB.habilitaInputCidade}"
+							value="#{atualizaCadastroUsuarioMB.cidadeSelecionada}"
+							style="width:125px" required="false"
+							requiredMessage="E necessário selecionar um grupo de segurança para o usuário!">
+							<f:selectItem itemLabel="Selecione uma cidade" itemValue="" />
+							<f:selectItems value="#{atualizaCadastroUsuarioMB.cidades}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="#{msg['label.e.prestador']}"
+							styleClass="textoM" />
+
+						<p:selectOneMenu id="hePrestador"
+							value="#{atualizaCadastroUsuarioMB.informacoesUsuarioSistema.prestador}"
+							style="width:125px" required="true"
+							requiredMessage="E necessário um tipo de conta!">
+							<f:selectItem itemLabel="Selecione..." itemValue="" />
+							<f:selectItem itemLabel="Sim" itemValue="S" />
+							<f:selectItem itemLabel="Não" itemValue="N" />
+
+							<p:ajax event="change"
+								update="inpDescricaoPrestador inptAtividade inptEnderecoEletronico"
+								listener="#{atualizaCadastroUsuarioMB.habilitaDescricaoPrestador()}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="#{msg['label.atividade']}"
+							styleClass="textoM" />
+						<p:inputText maxlength="60" style="width:300px" id="inptAtividade"
+							disabled="#{atualizaCadastroUsuarioMB.habilitaDescricao}"
+							value="#{atualizaCadastroUsuarioMB.informacoesUsuarioSistema.atividade}"
+							required="false" requiredMessage="Inserir uma atividade para o usuário!" />
+
+						<p:outputLabel value="#{msg['label.endereco.eletronico']}"
+							styleClass="textoM" />
+						<p:inputText maxlength="60" style="width:300px" id="inptEnderecoEletronico"
+							disabled="#{atualizaCadastroUsuarioMB.habilitaDescricao}"
+							value="#{atualizaCadastroUsuarioMB.informacoesUsuarioSistema.enderecoEletronico}"
+							required="true" requiredMessage="Insira um nome para o usuário!" />
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="1">
+						<p:spacer height="15px"></p:spacer>
+						<p:outputLabel value="#{msg['label.descricao.atividade']}"
+							styleClass="textoM" />
+						<p:inputTextarea rows="6" cols="60" maxlength="1024"
+							id="inpDescricaoPrestador"
+							disabled="#{atualizaCadastroUsuarioMB.habilitaDescricao}"
+							styleClass="txtImputArea" counter="display"
+							value="#{atualizaCadastroUsuarioMB.informacoesUsuarioSistema.descricaoAtividades}"
+							required="true" requiredMessage="O campo Valor*: e obrigatório!">
+						</p:inputTextarea>
+						<h:panelGrid columns="2">
+							<h:outputText id="display" styleClass="txtCinza10" />
+							<h:outputText value="#{msg['label.caracteres.restantes']}"
+								styleClass="txtCinza10" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="0">
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+						<p:commandButton value="#{msg['botao.salvar']}"
+							icon="ui-icon ui-icon-disk"
+							actionListener="#{atualizaCadastroUsuarioMB.atualizarUsuario()}"
+							update="formTable formCadastroParametro message @form"
+							ajax="false" />
+
+						<p:commandButton value="#{msg['botao.limpar']}" process="@this"
+							actionListener="#{atualizaCadastroUsuarioMB.limpar()}" immediate="true"
+							update="formCadastroParametro @form"
+							icon="ui-icon ui-icon-document" />
+					</h:panelGrid>
+				</h:form>
+
+			</p:fieldset>
+			<p:separator />
+			<h:form id="formTable">
+
+			</h:form>
+
+			<p:dialog header="Excluir" width="25%" height="50%"
+				widgetVar="excluirDlg" modal="true" position="center"
+				resizable="false">
+				<h:form styleClass="fonte-tamanho-12">
+					<img align="left" width="48px" height="48px"
+						src="../imagens/Delete.png" />
+					<h:outputLabel
+						value="Tem certeza que deseja excluir o registro selecionado?"></h:outputLabel>
+					<h:panelGrid columns="2" style="margin-left: 34%; margin-top: 10%;">
+						<p:commandButton update="formTable" style="font-size:12px"
+							value="#{msg['botao.confirmar']}" icon="ui-icon-trash"
+							oncomplete="PF('excluirDlg').hide()"
+							actionListener="#{cadastroUsuarioMB.removerUsuario()}" />
+						<p:commandButton style="font-size:12px"
+							value="#{msg['botao.calcelar']}"
+							icon="ui-icon-arrowreturnthick-1-w"
+							oncomplete="PF('excluirDlg').hide()" />
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+
+			<p:dialog header="Alterar Registro" widgetVar="alterarDlg"
+				modal="true" styleClass="fonte-tamanho-12" showEffect="fade"
+				hideEffect="fade" minHeight="200" minWidth="400" resizable="false">
+
+				<p:fieldset style="margin-bottom:20px">
+					<h:form id="formAlterar">
+						<h:panelGrid cellpadding="5" columns="2"
+							styleClass="fonte-tamanho-12">
+							<p:outputLabel value="#{msg['label.email']}" />
+							<h:inputText disabled="false" style="width:240px" maxlength="100"
+								value="#{cadastroUsuarioMB.usuarioSelecionado.email}"
+								required="true"
+								requiredMessage="Insira um email para o usuário!" />
+
+							<p:outputLabel value="#{msg['label.nome']}" />
+							<p:inputText style="width:300px" maxlength="256"
+								value="#{cadastroUsuarioMB.usuarioSelecionado.name}"
+								required="true" requiredMessage="Insira um nome para o usuário!" />
+
+
+							<p:outputLabel value="#{msg['label.nova.senha']}">
+							</p:outputLabel>
+							<p:selectOneMenu id="senhaN"
+								value="#{cadastroUsuarioMB.gerarNovaSenha}" style="width:110px">
+								<f:selectItem itemLabel="Selecione..." itemValue="" />
+								<f:selectItem itemLabel="Sim" itemValue="true" />
+								<f:selectItem itemLabel="Não" itemValue="false" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="#{msg['label.grupo']}" />
+							<p:selectOneMenu id="grupo"
+								value="#{cadastroUsuarioMB.usuarioSelecionado.role}"
+								style="width:125px">
+								<f:selectItem itemLabel="Selecione..." itemValue="" />
+								<f:selectItem itemLabel="Administrador" itemValue="ROLE_ADMIN" />
+								<f:selectItem itemLabel="Back Office"
+									itemValue="ROLE_FUNCIONARIO" />
+								<f:selectItem itemLabel="Financeiro" itemValue="ROLE_FINANCEIRO" />
+							</p:selectOneMenu>
+
+						</h:panelGrid>
+						<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+							<p:commandButton value="Alterar" update="formTable formAlterar"
+								actionListener="#{cadastroUsuarioMB.alterarUsuario()}"
+								oncomplete="PF('alterarDlg').hide()"
+								icon="ui-icon ui-icon-pencil" />
+
+							<p:commandButton value="Cancelar" update="formTable formAlterar"
+								oncomplete="PF('alterarDlg').hide()"
+								icon="ui-icon-arrowreturnthick-1-w" />
+						</h:panelGrid>
+					</h:form>
+
+				</p:fieldset>
+
+			</p:dialog>
+
+		</h:panelGrid>
+
+	</h:panelGrid>
+
+</h:body>
+</html>

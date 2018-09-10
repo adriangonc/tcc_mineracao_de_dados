@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bean:beans xmlns:bean="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+	<!-- Import data-source -->
+
+
+	<bean:import resource="/ds.xml" />
+
+	<http auto-config="true">
+		<form-login authentication-failure-url="/erroLogin.xhtml"
+			login-page="/login.xhtml" default-target-url="/pesquisa/prestador.xhtml" />
+		<intercept-url pattern="/home.xhtml"
+			access="ROLE_ADMIN, ROLE_FUNCIONARIO, ROLE_FINANCEIRO, ROLE_ROOT" />
+		<intercept-url pattern="/relatorio/boletosNaoHonradosLojista.xhtml"
+			access="ROLE_FUNCIONARIO, ROLE_ROOT" />
+		<intercept-url
+			pattern="/relatorio/expurgoBoletosBancariosRegistradosNaoPagos.xhtml"
+			access="ROLE_FUNCIONARIO, ROLE_ROOT" />
+		<intercept-url
+			pattern="/relatorio/GerencialContabilEntradaSaidaConsolidado.xhtml"
+			access="ROLE_FINANCEIRO, ROLE_ROOT" />
+		<intercept-url pattern="/relatorio/gerencialContabilCupons.xhtml"
+			access="ROLE_FUNCIONARIO, ROLE_ROOT" />
+		<intercept-url pattern="/relatorio/gerencialContabilTarifas.xhtml"
+			access="ROLE_FUNCIONARIO, ROLE_ROOT" />
+		<intercept-url pattern="/relatorio/GerencialContabilEntradaSaidaMes.xhtml"
+			access="ROLE_FINANCEIRO, ROLE_ROOT" />
+		<intercept-url pattern="/cadastro/**" access="ROLE_ADMIN, ROLE_ROOT" />
+		<intercept-url pattern="/cadastro/CadastroDeAtividade.xhtml"
+			access="ROLE_FUNCIONARIO, ROLE_ROOT" />
+
+		<intercept-url pattern="/mineracao/minerar.xhtml"
+			access="ROLE_ADMIN, ROLE_FUNCIONARIO, ROLE_ROOT, ROLE_FINANCEIRO" />
+			
+		<intercept-url pattern="/atualizar_usuario_sistema.xhtml"
+			access="ROLE_USUARIO" />
+
+		<logout logout-url="/logout" invalidate-session="true"
+			logout-success-url="/login.xhtml" delete-cookies="true" />
+
+		<access-denied-handler error-page="/acessoNaoAutorizado.xhtml" />
+
+		<session-management invalid-session-url="/login.xhtml"
+			session-fixation-protection="none" session-authentication-error-url="/login.xhtml">
+			<concurrency-control max-sessions="1"
+				expired-url="/erroUsuarioLogado.xhtml" />
+		</session-management>
+
+	</http>
+
+	<authentication-manager>
+		<authentication-provider>
+			<password-encoder hash="sha-256" />
+			<jdbc-user-service data-source-ref="dataSource"
+				users-by-username-query="SELECT email as username, SUBSTR(password, 6, 64) as password, 'true' as enable FROM users WHERE users.email = (?)"
+				authorities-by-username-query="SELECT users.email as username, users.role FROM users WHERE users.email = (?)" />
+
+		</authentication-provider>
+	</authentication-manager>
+
+</bean:beans>
+

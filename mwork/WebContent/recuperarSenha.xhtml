@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+<h:head>
+	<title>Recuperar senha</title>
+	<meta charset="UTF-8" />
+	<meta HTTP-EQUIV="EXPIRES" CONTENT="0" />
+	<meta HTTP-EQUIV="pragma" CONTENT="nocache" />
+	<link rel="stylesheet" type="text/css" href="./css/default.css"></link>
+</h:head>
+
+<h:body
+	style="background-position: 50% 0%;background-repeat: no-repeat;background-color:#ecf0f1;">
+	<f:loadBundle var="msg" basename="br.com.mwork.util.mensagens_pt_BR" />
+
+	<p:growl autoUpdate="true" id="message" />
+	<p:menubar>
+		<f:facet name="options">
+			<h:graphicImage value="/imagens/logoMini.png"
+				styleClass="logoMenuBar" />
+		</f:facet>
+		<p:menuitem value="RECUPERAÇÃO DE SENHA" url="#"
+			style="margin-left:600;font-weight:bold"></p:menuitem>
+
+	</p:menubar>
+	<p:dialog header="Recuperar senha" visible="true" closable="false"
+		draggable="true" resizable="false" width="50%">
+
+		<p:fieldset>
+			<h:form id="formSenha">
+				<p:outputLabel
+					value="Insira seu e-mail cadastrado no sistema para enviarmos uma nova senha de acesso."
+					style="color:gray;" styleClass="fonte-tamanho-12"></p:outputLabel>
+				<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+
+					<p:outputLabel value="#{msg['label.email']}" styleClass="textoM" />
+					<p:inputText maxlength="200" style="width:400px"
+						value="#{recuperaSenhaMB.usuarioSelecionado.email}"
+						required="true"
+						requiredMessage="Por favor insira um email para o usuário!"
+						validatorMessage="Formato inválido de email!">
+						<f:validateRegex
+							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+					</p:inputText>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="0">
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+					<p:commandButton value="#{msg['botao.enviar.email']}"
+						icon="ui-icon ui-icon-disk"
+						actionListener="#{recuperaSenhaMB.recuperarSenha()}"
+						update="formSenha @form" />
+
+					<p:commandButton value="#{msg['botao.limpar']}" process="@this"
+						actionListener="#{crudUsuarioMB.limpar()}"
+						update=":formSenha: @form" icon="ui-icon ui-icon-document"
+						immediate="true" />
+
+				</h:panelGrid>
+
+			</h:form>
+
+		</p:fieldset>
+		<h:form>
+			<h:commandLink action="loginBilling" value="Voltar" immediate="true" />
+		</h:form>
+
+	</p:dialog>
+
+</h:body>
+</html>

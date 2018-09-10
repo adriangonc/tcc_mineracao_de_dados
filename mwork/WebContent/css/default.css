@@ -1,0 +1,342 @@
+body {
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+	margin: 0;
+	padding: 0;
+	font-family: geneva, arial, helvetica, sans-serif;
+	font-size: 0.8em;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.fonte-tamanho-12 {
+	font-size: 12px !important;
+}
+
+.fonte-12 {
+	font-size: 12px !important;
+}
+
+.fonte-tamanho-13 {
+	font-size: 13px !important;
+}
+
+.vertTop {
+	vertical-align: top;
+}
+
+.inputValor {
+	width: 500px;
+}
+
+.inputDescricao {
+	width: 45%;
+}
+
+.textoM {
+	width: 65px;
+	font-size: 11px !important;
+}
+
+.colunaM {
+	width: 75px;
+	font-size: 11px !important;
+}
+
+.colunaP td:nth-child(1) {
+	width: 45px;
+}
+
+.colunaDireita {
+	text-align: right !important;
+}
+
+.colunaEsquerda {
+	text-align: left;
+}
+
+.alinharCentro {
+	text-align: center;
+}
+
+.tituloRelatorio {
+	text-align: center;
+	font-size: 16px !important;
+	color: #1E824C;
+	font-weight: bold;
+}
+
+.subTituloRelatorio {
+	text-align: center;
+	font-size: 15px;
+	color: #1E824C;
+}
+
+.cabecalhoRelat {
+	color: #6C7A89;
+	font-size: 13px !important;
+}
+
+.fundoCinza {
+	background-color: #86E2D5;
+}
+
+.calendarioMes .ui-datepicker-calendar {
+	display: none;
+}
+
+.iconeXls {
+	background-image: url("../imagens/xlss.png") !important;
+}
+
+.selectMenu .ui-selectonemenu-list {
+	font-size: 12px;
+}
+
+.semBorda {
+	border: none !important;
+}
+
+.pLogin {
+	text-align: center;
+}
+
+.panelGridCenter {
+	content margin: 0 auto !important;
+	width: 100%;
+}
+
+.txtVermelho {
+	text-align: center;
+	color: orange !important;
+	font-size: 16px !important;
+	background-color: red !important;
+}
+
+.fundoAzu {
+	color: #00CCFF !important;
+}
+
+.ui-custompanelgrid, .ui-custompanelgrid td {
+	font-weight: bold;
+	background-color: blue !important;
+}
+
+.panelG {
+	width: 100% !important;
+}
+
+.tbRelAno .ui-datatable-scrollable table {
+	table-layout: fixed !important;
+}
+
+.textoAzul {
+	color: blue !important;
+}
+
+.pgCentralizado {
+	text-align: center;
+	vertical-align: top;
+	width: 100%;
+}
+
+.textoDireita {
+	text-align: right !important;
+}
+
+.logoBilingT {
+	background-image: url("#{request.contextPath}/imagens/logoHome.png")
+		!important;
+}
+
+.colunaMedia {
+	width: 120px !important;
+}
+
+.colunaCentralizada {
+	text-align: center !important;
+	color: green;
+}
+
+.coluna220 {
+	width: 220px !important;
+}
+
+.ui-datatable-odd {
+	background: #ffffff;
+}
+
+.ui-datatable-even {
+	background: #EFEFEF;
+}
+
+.link {
+	font-size: 12px !important;
+	text-decoration: none !important;
+	padding-left: 5;
+	color: #6C7A89;
+}
+
+.linkCadastro {
+	font-size: 14px !important;
+	text-decoration: none !important;
+	padding-left: 5;
+	color: #6C7A89;
+}
+
+.imgLogin {
+	padding-left: 4;
+}
+
+.login {
+	font-size: 16px;
+	color: #2C3E50;
+}
+
+.btnEntrar {
+	font-size: 16px;
+}
+
+/* .ui-menubar,.ui-menu-child,.ui-menu {
+    background: #00B16A !important;
+} */
+.padTop {
+	padding-top: 1% !important;
+	padding-left: 1% !important
+}
+
+.menuLateral {
+	font-size: 0.85em !important;
+	width: 210px;
+	padding-top: 1.5%;
+	border: none !important;
+	/* border-color: #eee !important; */
+	
+}
+
+.ui-panelmenu .ui-panelmenu-header {
+	background: #DADFE1 !important;
+	font-size: 1.15em !important;
+	text-decoration: none;
+
+	/* border-color: #eee; */
+}
+
+.ui-panelmenu .ui-menuitem-text {
+	/* color: black !important; */
+	
+}
+
+.ui-panelmenu {
+	border: none !important;
+}
+
+.ui-menubar .ui-menuitem-text {
+	font-size: 0.9em;
+}
+
+/* PrimeFaces icon reset */
+.ui-widget .ui-icon.fa, .ui-icon.fa {
+	background-image: none;
+	text-indent: 0px;
+	background-repeat: no-repeat;
+	display: block;
+	overflow: visible;
+	text-indent: 0px;
+}
+
+.ui-button.ui-state-default {
+	font-size: 13px !important;
+}
+
+.ui-button.ui-state-hover {
+	
+}
+
+.ui-button.ui-state-active {
+	
+}
+
+.logoMenuBar {
+	position: absolute;
+	left: 2px;
+	top: 2px;
+	width: 140px;
+}
+
+.login .ui-dialog-titlebar {
+	background-image: none;
+	background-color: #2ECC71;
+	text-shadow: none;
+}
+
+.loginErro .ui-dialog-titlebar {
+	background-image: none;
+	background-color: #F4B350;
+	text-shadow: none;
+}
+
+.txtCinza10 {
+	text-align: center;
+	color: #BFBFBF !important;
+	font-size: 0.7em !important;
+}
+
+.txtImputArea {
+	color: #6C7A89 !important;
+	font-size: 0.9em !important;
+	font-weight: normal !important;
+}
+
+.inPesquisa {
+	width: 420px !important;
+}
+
+.pnlPesquisa {
+	width: 38% !important;
+	
+}
+
+.pnlVertTop {
+	vertical-align: top;
+	width: 70%;
+	background-color: #D2D7D3;
+}
+
+.btnPesquisar {
+	font-size: 14px !important;
+}
+
+.menuAnuncios {
+	font-size: 0.85em !important;
+	width: 210px;
+	padding-top: 1.5%;
+	border: none !important;
+	/* border-color: #eee !important; */
+	
+}
+
+.txtCinzaAnuncio {
+	text-align: center;
+	color: #52B3D9 !important;
+	font-size: 1.1em !important;
+	
+}
+
+.links{
+	color: #1F3A93 !important;
+	text-decoration: none !important;
+}
+
+.enderecoEletronico{
+	color: #1F3A93 !important;
+	font-size: 14px !important;
+	text-decoration: none !important;
+}
+
+.ui-menubar,.ui-menu-child,.ui-menu {
+    background: #52B3D9 !important;
+}

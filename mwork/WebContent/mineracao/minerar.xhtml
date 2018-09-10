@@ -1,0 +1,186 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+<h:head>
+	<title>Minerar Dados</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../css/default.css"></link>
+</h:head>
+
+<h:body>
+	<f:loadBundle var="msg" basename="br.com.mwork.util.mensagens_pt_BR" />
+
+	<p:growl autoUpdate="true" id="message" life="10000" />
+	<p:menubar>
+		<f:facet name="options">
+			<h:graphicImage value="../imagens/logoMini.png"
+				styleClass="logoMenuBar" />
+		</f:facet>
+		<p:menuitem value="MINERAR DADOS" url="#"
+			style="margin-left:600;font-weight:bold">
+		</p:menuitem>
+		<p:submenu icon="fa fa-user" label="#{crudUsuarioMB.username}"
+			style="float:right">
+			<p:menuitem value="Alterar Senha" url="../TrocarSenha.xhtml"
+				icon="ui-icon ui-icon-key" />
+			<p:menuitem value="Sair"
+				url="${pageContext.request.contextPath}/logout"
+				icon="ui-icon ui-icon-power" />
+		</p:submenu>
+	</p:menubar>
+	<h:panelGrid columns="2" columnClasses="vertTop, vertTop"
+		style="height:80%">
+		<h:form>
+			<ui:include src="/menu.xhtml" />
+		</h:form>
+		
+
+		<h:panelGrid columnClasses="vertTop">
+			<p:fieldset>
+				<h:form id="formCadastroParametro">
+					<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+
+						<p:outputLabel value="#{msg['label.minerar.url1']}"
+							styleClass="textoM" />
+						<p:inputText maxlength="60" style="width:300px"
+							value="#{minerarDadosMB.urlUm}" required="true"
+							requiredMessage="Insira pelo menos uma URL!" />
+
+						<p:spacer height="10px"></p:spacer>
+						<p:spacer height="10px"></p:spacer>
+
+						<p:outputLabel value="#{msg['label.minerar.url2']}"
+							styleClass="textoM" />
+						<p:inputText maxlength="60" style="width:300px"
+							value="#{minerarDadosMB.urlDois}" required="false"
+							requiredMessage="Insira uma URL!" disabled="true"/>
+
+						<p:spacer height="10px"></p:spacer>
+						<p:spacer height="10px"></p:spacer>
+
+						<p:outputLabel value="#{msg['label.minerar.url3']}"
+							styleClass="textoM" />
+						<p:inputText maxlength="60" style="width:300px"
+							value="#{minerarDadosMB.urlTres}" required="false"
+							requiredMessage="Insira uma URL!" disabled="true" />
+
+						<p:spacer height="10px"></p:spacer>
+						<p:spacer height="10px"></p:spacer>
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="0">
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+						<p:commandButton value="#{msg['botao.minerar']}"
+							icon="ui-icon ui-icon-disk"
+							actionListener="#{minerarDadosMB.minerar()}"
+							update="formTable formCadastroParametro message @form"
+							ajax="false" />
+
+						<p:commandButton value="#{msg['botao.limpar']}" process="@this"
+							actionListener="#{minerarDadosMB.limpar()}" immediate="true"
+							update="formCadastroParametro @form"
+							icon="ui-icon ui-icon-document" />
+					</h:panelGrid>
+				</h:form>
+
+			</p:fieldset>
+			<p:separator />
+			
+			
+			
+			<h:form id="formTable">
+
+			</h:form>
+
+			<p:dialog header="Excluir" width="25%" height="50%"
+				widgetVar="excluirDlg" modal="true" position="center"
+				resizable="false">
+				<h:form styleClass="fonte-tamanho-12">
+					<img align="left" width="48px" height="48px"
+						src="../imagens/Delete.png" />
+					<h:outputLabel
+						value="Tem certeza que deseja excluir o registro selecionado?"></h:outputLabel>
+					<h:panelGrid columns="2" style="margin-left: 34%; margin-top: 10%;">
+						<p:commandButton update="formTable" style="font-size:12px"
+							value="#{msg['botao.confirmar']}" icon="ui-icon-trash"
+							oncomplete="PF('excluirDlg').hide()"
+							actionListener="#{cadastroUsuarioMB.removerUsuario()}" />
+						<p:commandButton style="font-size:12px"
+							value="#{msg['botao.calcelar']}"
+							icon="ui-icon-arrowreturnthick-1-w"
+							oncomplete="PF('excluirDlg').hide()" />
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+
+			<p:dialog header="Alterar Registro" widgetVar="alterarDlg"
+				modal="true" styleClass="fonte-tamanho-12" showEffect="fade"
+				hideEffect="fade" minHeight="200" minWidth="400" resizable="false">
+
+				<p:fieldset style="margin-bottom:20px">
+					<h:form id="formAlterar">
+						<h:panelGrid cellpadding="5" columns="2"
+							styleClass="fonte-tamanho-12">
+							<p:outputLabel value="#{msg['label.email']}" />
+							<h:inputText disabled="false" style="width:240px" maxlength="100"
+								value="#{cadastroUsuarioMB.usuarioSelecionado.email}"
+								required="true"
+								requiredMessage="Insira um email para o usuário!" />
+
+							<p:outputLabel value="#{msg['label.nome']}" />
+							<p:inputText style="width:300px" maxlength="256"
+								value="#{cadastroUsuarioMB.usuarioSelecionado.name}"
+								required="true" requiredMessage="Insira um nome para o usuário!" />
+
+
+							<p:outputLabel value="#{msg['label.nova.senha']}">
+							</p:outputLabel>
+							<p:selectOneMenu id="senhaN"
+								value="#{cadastroUsuarioMB.gerarNovaSenha}" style="width:110px">
+								<f:selectItem itemLabel="Selecione..." itemValue="" />
+								<f:selectItem itemLabel="Sim" itemValue="true" />
+								<f:selectItem itemLabel="Não" itemValue="false" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="#{msg['label.grupo']}" />
+							<p:selectOneMenu id="grupo"
+								value="#{cadastroUsuarioMB.usuarioSelecionado.role}"
+								style="width:125px">
+								<f:selectItem itemLabel="Selecione..." itemValue="" />
+								<f:selectItem itemLabel="Administrador" itemValue="ROLE_ADMIN" />
+								<f:selectItem itemLabel="Back Office"
+									itemValue="ROLE_FUNCIONARIO" />
+								<f:selectItem itemLabel="Financeiro" itemValue="ROLE_FINANCEIRO" />
+							</p:selectOneMenu>
+
+						</h:panelGrid>
+						<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+							<p:commandButton value="Alterar" update="formTable formAlterar"
+								actionListener="#{cadastroUsuarioMB.alterarUsuario()}"
+								oncomplete="PF('alterarDlg').hide()"
+								icon="ui-icon ui-icon-pencil" />
+
+							<p:commandButton value="Cancelar" update="formTable formAlterar"
+								oncomplete="PF('alterarDlg').hide()"
+								icon="ui-icon-arrowreturnthick-1-w" />
+						</h:panelGrid>
+					</h:form>
+
+				</p:fieldset>
+
+			</p:dialog>
+
+		</h:panelGrid>
+
+	</h:panelGrid>
+
+</h:body>
+</html>

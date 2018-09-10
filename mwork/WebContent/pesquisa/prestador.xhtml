@@ -1,0 +1,393 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+<h:head>
+	<title>Pesquisa por prestador de serviços</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../css/default.css"></link>
+</h:head>
+
+<h:body>
+	<f:loadBundle var="msg" basename="br.com.mwork.util.mensagens_pt_BR" />
+
+	<p:growl autoUpdate="true" id="message" showDetail="false" life="7000" />
+	<p:menubar>
+		<f:facet name="options">
+			<h:graphicImage value="../imagens/logoMini.png"
+				styleClass="logoMenuBar" />
+		</f:facet>
+		<p:menuitem value="Pesquisa por prestador de serviço" url="#"
+			style="margin-left:600;font-weight:bold"></p:menuitem>
+		<p:submenu icon="fa fa-user" label="#{crudUsuarioMB.username}" id="emailUsuario"
+			style="float:right">
+			<p:menuitem value="Alterar Senha" url="../TrocarSenha.xhtml"
+				icon="ui-icon ui-icon-key" />
+			<p:menuitem value="Painel de administrador" url="../home.xhtml"
+				icon="ui-icon ui-icon-key" />
+
+			<p:menuitem value="Criar conta" url="/cadastro_usuario_sistema.xhtml"
+				icon="ui-icon ui-icon-person" />
+			<p:menuitem value="Editar cadastro"
+				url="/atualizar_usuario_sistema.xhtml" icon="ui-icon ui-icon-pencil" />
+
+			<p:menuitem value="Sair"
+				url="${pageContext.request.contextPath}/logout"
+				icon="ui-icon ui-icon-power" />
+		</p:submenu>
+	</p:menubar>
+	<h:panelGrid columns="3" columnClasses="vertTop, vertTop, vertTop"
+		style="height:80%">
+		<h:form>
+			<ui:include src="/menuCategorias.xhtml" />
+		</h:form>
+
+		<h:panelGrid columnClasses="vertTop">
+			<p:fieldset>
+				<h:form id="pnlVertTop">
+					<h:panelGrid columns="2" styleClass="pnlPesquisa">
+						<p:outputLabel value="Pesquisar:"></p:outputLabel>
+						<p:inputText styleClass="inPesquisa" required="true"
+							requiredMessage="Você deve digitar uma Atividade no campo Pesquisa*:"
+							value="#{pesquisaMB.atividade}" />
+
+						<p:outputLabel value="#{msg['label.estados']}" styleClass="textoM" />
+
+						<p:selectOneMenu id="estados"
+							value="#{pesquisaMB.estadoSelecionado}" style="width:125px"
+							required="false"
+							requiredMessage="E necessário selecionar um estado!">
+							<f:selectItem itemLabel="Selecione..." itemValue="" />
+							<f:selectItem itemLabel="Acre - AC" itemValue="2" />
+							<f:selectItem itemLabel="Alagoas - AL" itemValue="14" />
+							<f:selectItem itemLabel="Amapá - AP" itemValue="6" />
+							<f:selectItem itemLabel="Amazonas - AM" itemValue="3" />
+							<f:selectItem itemLabel="Bahia - BA" itemValue="16" />
+							<f:selectItem itemLabel="Ceará - CE" itemValue="10" />
+							<f:selectItem itemLabel="Distrito Federal - DF" itemValue="27" />
+							<f:selectItem itemLabel="Espírito Santo	- ES" itemValue="18" />
+							<f:selectItem itemLabel="Goiás - GO" itemValue="26" />
+							<f:selectItem itemLabel="Maranhão - MA" itemValue="8" />
+							<f:selectItem itemLabel="Mato Grosso - MT" itemValue="25" />
+							<f:selectItem itemLabel="Mato Grosso do Sul	- MS" itemValue="24" />
+							<f:selectItem itemLabel="Minas Gerais - MG" itemValue="17" />
+							<f:selectItem itemLabel="Pará - PA" itemValue="5" />
+							<f:selectItem itemLabel="Paraíba - PB" itemValue="12" />
+							<f:selectItem itemLabel="Paraná - PR" itemValue="21" />
+							<f:selectItem itemLabel="Pernambuco	- PE" itemValue="13" />
+							<f:selectItem itemLabel="Piauí - PI" itemValue="9" />
+							<f:selectItem itemLabel="Rio de Janeiro	- RJ" itemValue="19" />
+							<f:selectItem itemLabel="Rio Grande do Norte - RN" itemValue="11" />
+							<f:selectItem itemLabel="Rio Grande do Sul	- RS" itemValue="23" />
+							<f:selectItem itemLabel="Rondônia - RO" itemValue="1" />
+							<f:selectItem itemLabel="Roraima - RR" itemValue="4" />
+							<f:selectItem itemLabel="Santa Catarina	- SC" itemValue="22" />
+							<f:selectItem itemLabel="São Paulo	- SP" itemValue="20" />
+							<f:selectItem itemLabel="Sergipe - SE" itemValue="15" />
+							<f:selectItem itemLabel="Tocantins - TO" itemValue="7" />
+							<f:selectItem itemLabel="Exterior" itemValue="28" />
+							<p:ajax event="change" update="cidades"
+								listener="#{pesquisaMB.filtraCidadePorEstado()}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel value="#{msg['label.cidade']}" styleClass="textoM" />
+						<p:selectOneMenu id="cidades"
+							disabled="#{pesquisaMB.habilitaInputCidade}"
+							value="#{pesquisaMB.cidadeSelecionada}" style="width:125px"
+							required="false"
+							requiredMessage="E necessário selecionar uma cidade para a pesquisa!">
+							<f:selectItem itemLabel="Selecione uma cidade" itemValue="" />
+							<f:selectItems value="#{pesquisaMB.cidades}" />
+						</p:selectOneMenu>
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="0">
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" styleClass="btnPesquisar">
+						<p:commandButton value="#{msg['botao.pesquisar']}"
+							icon="ui-icon ui-icon-search"
+							actionListener="#{pesquisaMB.buscarPrestador()}"
+							update="formTable message" />
+
+						<p:commandButton value="#{msg['botao.limpar']}" process="@this"
+							actionListener="#{pesquisaMB.limpar()}"
+							update="pnlVertTop formTable message"
+							icon="ui-icon ui-icon-document" />
+					</h:panelGrid>
+				</h:form>
+			</p:fieldset>
+			<p:separator />
+			<h:form id="formTable">
+				<p:dataTable id="singleDT" var="prestador"
+					styleClass="fonte-tamanho-12"
+					value="#{pesquisaMB.listaPrestadorCadastrado}"
+					selectionMode="single" rowKey="#{prestador.id}" paginator="true"
+					rows="40" emptyMessage="Nenhum registro encontrado"
+					selection="#{pesquisaMB.prestadorSelecionado}"
+					widgetVar="tableResults" sortBy="#{prestador.name}">
+
+					<p:column filterBy="#{prestador.name}" filterMatchMode="contains"
+						headerText="#{msg['colun.prestador']}"
+						styleClass="fonte-tamanho-12">
+						<h:outputText value="#{prestador.name}" />
+					</p:column>
+					<p:column filterBy="" filterMatchMode="contains"
+						headerText="#{msg['colun.descricaop']}" 
+						styleClass="fonte-tamanho-12">
+						<h:outputText value="#{prestador.descricaoAtividades}" />
+					</p:column>
+
+					<p:column filterBy="" filterMatchMode="contains"
+						headerText="#{msg['colun.telefone']}" 
+						styleClass="fonte-tamanho-12">
+						<h:outputText value="#{prestador.telefone}" />
+					</p:column>
+
+					<p:column filterBy="" filterMatchMode="contains"
+						headerText="#{msg['colun.email']}" styleClass="fonte-tamanho-12">
+						<h:outputText value="#{prestador.email}" />
+					</p:column>
+
+					<p:column filterBy="" filterMatchMode="contains"
+						headerText="#{msg['colun.cidade']}" 
+						styleClass="fonte-tamanho-12">
+						<h:outputText value="#{prestador.cidade}" />
+					</p:column>
+
+					<p:column filterBy="" filterMatchMode="contains"
+						headerText="#{msg['colun.estado']}" 
+						styleClass="fonte-tamanho-12">
+						<h:outputText value="#{prestador.estado}" />
+					</p:column>
+
+					<p:column filterBy="" filterMatchMode="contains"
+						headerText="#{msg['colun.qualificacao']}"
+						styleClass="fonte-tamanho-12" width="80">
+						<p:rating value="#{prestador.mediaQualificacao}" readonly="true" />
+					</p:column>
+
+					<p:column style="width:40px;text-align: center">
+						<p:commandButton style="width:18px;height:18px"
+							update="formAlterar" oncomplete="PF('alterarDlg').show()"
+							icon="ui-icon-mail-closed" title="Alterar">
+							<f:setPropertyActionListener value="#{parametros}"
+								target="#{crudParametrosSistemaMB.parametroSelecionado}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width:40px;text-align: center">
+						<p:commandButton style="width:18px;height:18px"
+							update="informacaoUsuario"
+							oncomplete="PF('informacaoDlg').show()"
+							icon="ui-icon-circle-zoomin" title="Informações">
+							<f:setPropertyActionListener value="#{prestador}"
+								target="#{pesquisaMB.prestadorSelecionado}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+
+				<p:spacer height="30px"></p:spacer>
+				<p:panelGrid style="width:95%">
+					<p:outputLabel value="Pesquisa externa" style="align:center"></p:outputLabel>
+				</p:panelGrid>
+				<p:dataTable id="tbPrestador" var="prestadorMinerado"
+					styleClass="fonte-tamanho-12"
+					value="#{pesquisaMB.listaPestadorMinerado}" selectionMode="single"
+					rowKey="#{prestadorMinerado.is}" paginator="true" rows="10"
+					emptyMessage="Nenhum registro encontrado"
+					selection="#{pesquisaMB.prestadorMineradoSelecionado}"
+					widgetVar="tableResults">
+
+					<p:column headerText="#{msg['colun.id']}" style="width:80px"
+						styleClass="fonte-tamanho-12">
+						<h:outputText value="#{prestadorMinerado.is}" />
+					</p:column>
+
+					<p:column filterBy="#{prestadorMinerado.titulo}"
+						filterMatchMode="contains" headerText="#{msg['colun.prestador']}"
+						styleClass="fonte-tamanho-12">
+						<h:outputText value="#{prestadorMinerado.titulo}" />
+					</p:column>
+
+					<p:column filterBy="" filterMatchMode="contains"
+						headerText="#{msg['colun.url']}" styleClass="fonte-tamanho-12">
+						<h:outputLink value="#{prestadorMinerado.url}">
+							<h:outputText value="#{prestadorMinerado.url}" styleClass="links" />
+						</h:outputLink>
+					</p:column>
+
+					<p:column filterBy="" filterMatchMode="contains"
+						headerText="#{msg['colun.qualificacao']}"
+						styleClass="fonte-tamanho-12" width="80">
+						<p:rating value="#" readonly="true" />
+					</p:column>
+
+				</p:dataTable>
+				<!-- <p:dataTable id="singleDT" var="parametros"
+					styleClass="fonte-tamanho-12"
+					value="#{crudParametrosSistemaMB.listaParametroSistema}"
+					selectionMode="single" rowKey="#{parametros.parametroId}"
+					paginator="true" rows="10"
+					emptyMessage="Nenhum registro encontrado"
+					selection="#{crudParametrosSistemaMB.parametroSelecionado}"
+					widgetVar="tableResults" sortBy="#{parametros.parametroId}">
+
+					<p:column headerText="#{msg['colun.id']}"
+						styleClass="fonte-tamanho-12" width="50">
+						<h:outputText value="#{parametros.parametroId}" />
+					</p:column>
+					<p:column filterBy="#{parametros.parametroDescricao}"
+						filterMatchMode="contains" headerText="#{msg['colun.descricao']}"
+						style="width:250px" styleClass="fonte-tamanho-12">
+						<h:outputText value="#{parametros.parametroDescricao}" />
+					</p:column>
+
+					<p:column filterBy="#{parametros.parametroValor}"
+						filterMatchMode="contains" headerText="#{msg['colun.valor']}"
+						styleClass="fonte-tamanho-12">
+						<h:outputText value="#{parametros.parametroValor}" />
+					</p:column>
+
+					<p:column style="width:40px;text-align: center">
+						<p:commandButton style="width:18px;height:18px"
+							update="formAlterar" oncomplete="PF('alterarDlg').show()"
+							icon="ui-icon-pencil" title="Alterar">
+							<f:setPropertyActionListener value="#{parametros}"
+								target="#{crudParametrosSistemaMB.parametroSelecionado}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width:40px;text-align: center">
+						<p:commandButton style="width:18px;height:18px"
+							oncomplete="PF('excluirDlg').show()" icon="ui-icon-trash"
+							title="Deletar">
+							<f:setPropertyActionListener value="#{parametros}"
+								target="#{crudParametrosSistemaMB.parametroSelecionado}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable> -->
+			</h:form>
+
+			<p:dialog header="Excluir" width="25%" height="50%"
+				widgetVar="excluirDlg" modal="true" position="center"
+				resizable="false">
+				<h:form styleClass="fonte-tamanho-12">
+					<img align="left" width="48px" height="48px"
+						src="../imagens/Delete.png" />
+					<h:outputLabel
+						value="Tem certeza que deseja excluir o registro selecionado?"></h:outputLabel>
+					<h:panelGrid columns="2" style="margin-left: 34%; margin-top: 10%;">
+						<p:commandButton update="formTable" style="font-size:12px"
+							value="#{msg['botao.confirmar']}" icon="ui-icon-trash"
+							oncomplete="PF('excluirDlg').hide()"
+							actionListener="#{crudParametrosSistemaMB.removerParametro()}" />
+						<p:commandButton style="font-size:12px"
+							value="#{msg['botao.calcelar']}"
+							icon="ui-icon-arrowreturnthick-1-w"
+							oncomplete="PF('excluirDlg').hide()" />
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+
+			<p:dialog header="Enviar mensagem" widgetVar="alterarDlg"
+				modal="true" styleClass="fonte-tamanho-12" showEffect="fade"
+				hideEffect="fade" minHeight="200" minWidth="400" resizable="false">
+
+				<p:fieldset style="margin-bottom:20px">
+					<h:form id="formAlterar">
+						<h:panelGrid cellpadding="5" columns="2"
+							styleClass="fonte-tamanho-12">
+							<p:outputLabel value="#{msg['label.assunto']}" />
+							<h:inputText disabled="false" style="width:240px" maxlength="60"
+								value="#{crudParametrosSistemaMB.parametroSelecionado.parametroDescricao}"
+								required="true"
+								requiredMessage="O campo Assunto*: e obrigatório!" />
+
+							<p:outputLabel value="#{msg['label.mensagem']}" />
+							<h:panelGrid>
+								<p:inputTextarea rows="6" cols="50" maxlength="1024"
+									styleClass="txtImputArea" counter="display"
+									value="#{crudParametrosSistemaMB.parametroSelecionado.parametroValor}"
+									required="true"
+									requiredMessage="O campo Mensagem*: e obrigatório!">
+								</p:inputTextarea>
+
+								<h:panelGrid columns="2">
+									<h:outputText id="display" styleClass="txtCinza10" />
+									<h:outputText value="#{msg['label.caracteres.restantes']}"
+										styleClass="txtCinza10" />
+								</h:panelGrid>
+							</h:panelGrid>
+
+						</h:panelGrid>
+						<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+							<p:commandButton value="#{msg['botao.salvar']}"
+								update="formTable"
+								actionListener="#{crudParametrosSistemaMB.alterarParametro()}"
+								oncomplete="PF('alterarDlg').hide()"
+								icon="ui-icon ui-icon-pencil" />
+
+							<p:commandButton value="#{msg['botao.calcelar']}"
+								update="formTable" oncomplete="PF('alterarDlg').hide()"
+								icon="ui-icon-arrowreturnthick-1-w" immediate="true" />
+						</h:panelGrid>
+					</h:form>
+				</p:fieldset>
+
+			</p:dialog>
+
+			<p:dialog header="Informações" widgetVar="informacaoDlg" modal="true"
+				styleClass="fonte-tamanho-12" showEffect="fade" hideEffect="fade"
+				minHeight="200" minWidth="480" resizable="false">
+
+				<p:fieldset style="margin-bottom:20px">
+					<h:form id="informacaoUsuario">
+						<h:panelGrid cellpadding="5" columns="1">
+							<p:rating
+								value="#{pesquisaMB.prestadorSelecionado.mediaQualificacao}"
+								readonly="true" />
+							<p:spacer height="20px"></p:spacer>
+							<h:panelGrid columns="2">
+								<p:outputLabel value="#{msg['label.endereco.eletronico']}" />
+
+								<p:outputLabel
+									value="#{pesquisaMB.prestadorSelecionado.enderecoEletronico}"
+									styleClass="enderecoEletronico" />
+
+
+								<p:outputLabel value="#{msg['label.telefone']}" />
+
+								<p:outputLabel
+									value="#{pesquisaMB.prestadorSelecionado.telefone}"
+									styleClass="enderecoEletronico" />
+
+								<p:outputLabel value="#{msg['label.descricao.atividade']}" />
+
+								<p:inputTextarea readonly="true" rows="6" cols="60"
+									value="#{pesquisaMB.prestadorSelecionado.descricaoAtividades}" />
+							</h:panelGrid>
+
+						</h:panelGrid>
+
+					</h:form>
+				</p:fieldset>
+
+			</p:dialog>
+
+		</h:panelGrid>
+		<h:form>
+			
+		</h:form>
+	</h:panelGrid>
+
+
+</h:body>
+</html>

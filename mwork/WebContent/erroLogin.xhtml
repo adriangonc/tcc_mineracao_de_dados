@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Tente novamente!</title>
+
+	<link rel="stylesheet" type="text/css" href="./css/default.css"></link>
+</h:head>
+<h:body
+	style="background-position: 50% 0%;background-repeat: no-repeat;background-color:#ecf0f1;">
+	<p:growl autoUpdate="true" id="message" />
+	<p:dialog header="Entrar" visible="true" closable="false"
+		draggable="true" resizable="false" width="410" styleClass="loginErro">
+		<h:panelGrid styleClass="panelGridCenter">
+			<h:panelGrid columns="2">
+				<img align="top" width="48px" height="48px"
+					src="#{request.contextPath}/imagens/acesso-negado.png" />
+				<p:outputLabel
+					value="Os campos e-mail e senha são obrigatórios é necessario inserir o e-mail e senha corretos!"
+					style="color:red;"></p:outputLabel>
+			</h:panelGrid>
+			<form action="j_spring_security_check" method="post" id="formLogin">
+				<p:growl id="growl" showDetail="true" sticky="true" />
+				<h:panelGrid columns="2" cellpadding="5">
+					<h:outputLabel for="j_username" value="Email*: " styleClass="login" />
+					<h:inputText id="j_username" required="true" style="width: 270px"
+						requiredMessage="O campo email e obrigatório!">
+					</h:inputText>
+
+					<h:outputLabel for="j_password" value="Senha*: " styleClass="login" />
+					<h:inputSecret id="j_password" required="true" style="width: 270px"
+						requiredMessage="O campo senha e obrigatório!" />
+					<h:commandButton value="Entrar" />
+				</h:panelGrid>
+			</form>
+			<h:form>
+				<h:panelGrid columns="2" styleClass="imgLogin">
+					<img align="top" width="36px" height="36px"
+						src="#{request.contextPath}/imagens/lock-icon.png" />
+					<h:commandLink action="recuperarSenha" value="Esqueci minha senha!"
+						styleClass="link" />
+				</h:panelGrid>
+			</h:form>
+		</h:panelGrid>
+	</p:dialog>
+</h:body>
+</html>

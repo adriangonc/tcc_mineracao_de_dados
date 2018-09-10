@@ -1,0 +1,238 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+<h:head>
+	<title>Cadastro e edição de usuários do sistema</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="../css/default.css"></link>
+</h:head>
+
+<h:body>
+	<f:loadBundle var="msg" basename="br.com.mwork.util.mensagens_pt_BR" />
+
+	<p:growl autoUpdate="true" id="message" life="10000" />
+	<p:menubar>
+		<f:facet name="options">
+			<h:graphicImage value="../imagens/logoMini.png"
+				styleClass="logoMenuBar" />
+		</f:facet>
+		<p:menuitem value="CADASTRO DE USUÁRIOS" url="#"
+			style="margin-left:600;font-weight:bold">
+		</p:menuitem>
+		<p:submenu icon="fa fa-user" label="#{crudUsuarioMB.username}"
+			style="float:right">
+			<p:menuitem value="Alterar Senha" url="../TrocarSenha.xhtml"
+				icon="ui-icon ui-icon-key" />
+			<p:menuitem value="Sair"
+				url="${pageContext.request.contextPath}/logout"
+				icon="ui-icon ui-icon-power" />
+		</p:submenu>
+	</p:menubar>
+	<h:panelGrid columns="2" columnClasses="vertTop, vertTop"
+		style="height:80%">
+		<h:form>
+			<ui:include src="/menu.xhtml" />
+		</h:form>
+
+		<h:panelGrid columnClasses="vertTop">
+			<p:fieldset>
+				<h:form id="formCadastroParametro">
+					<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+
+						<p:outputLabel value="#{msg['label.email']}" styleClass="textoM" />
+						<p:inputText id="email" maxlength="100" style="width:300px"
+							value="#{crudUsuarioMB.usuario.email}" required="true"
+							requiredMessage="Insira um email para o usuário!"
+							validatorMessage="Formato inválido de email!">
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+						</p:inputText>
+
+						<p:outputLabel value="#{msg['label.nome']}" styleClass="textoM" />
+						<p:inputText maxlength="60" style="width:300px"
+							value="#{crudUsuarioMB.usuario.name}" required="true"
+							requiredMessage="Insira um nome para o usuário!" />
+
+						<p:outputLabel value="#{msg['label.senha']}" styleClass="textoM" />
+						<p:inputText disabled="true" value="Enviada por email">
+						</p:inputText>
+
+						<p:outputLabel value="#{msg['label.grupo']}" styleClass="textoM" />
+						<p:selectOneMenu id="grupo" value="#{crudUsuarioMB.usuario.role}"
+							style="width:125px" required="true"
+							requiredMessage="E necessário selecionar um grupo de segurança para o usuário!">
+							<f:selectItem itemLabel="Selecione..." itemValue="" />
+							<f:selectItem itemLabel="Administrador" itemValue="ROLE_ADMIN" />
+							<f:selectItem itemLabel="Funcionário" itemValue="Financeiro" />
+							<f:selectItem itemLabel="Financeiro" itemValue="ROLE_FINANCEIRO" />
+						</p:selectOneMenu>
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="0">
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+						<p:commandButton value="#{msg['botao.salvar']}"
+							icon="ui-icon ui-icon-disk"
+							actionListener="#{crudUsuarioMB.inserirUsuario()}"
+							update="formTable:singleDT formCadastroParametro message @form"
+							ajax="false" />
+
+						<p:commandButton value="#{msg['botao.limpar']}" process="@this"
+							actionListener="#{crudUsuarioMB.limpar()}" immediate="true"
+							update="formCadastroParametro @form"
+							icon="ui-icon ui-icon-document" />
+					</h:panelGrid>
+				</h:form>
+
+			</p:fieldset>
+			<p:separator />
+			<h:form id="formTable">
+				<p:dataTable id="singleDT" var="usuario"
+					value="#{crudUsuarioMB.listaUsuario}" selectionMode="single"
+					rowKey="#{usuario.id}" paginator="true" rows="10"
+					emptyMessage="Nenhum registro encontrado"
+					selection="#{crudUsuarioMB.usuarioSelecionado}"
+					widgetVar="tableResults" sortBy="#{usuario.id}">
+
+
+					<p:column filterBy="#{usuario.email}" filterMatchMode="contains"
+						headerText="#{msg['colun.email']}" style="width:350px"
+						styleClass="fonte-tamanho-12">
+						<h:outputText value="#{usuario.email}" escape="false" />
+					</p:column>
+
+					<p:column filterBy="#{usuario.name}" filterMatchMode="contains"
+						headerText="#{msg['colun.usuario']}" styleClass="fonte-tamanho-12">
+						<h:outputText value="#{usuario.name}" />
+					</p:column>
+
+					<p:column filterBy="#{usuario.role}" filterMatchMode="contains"
+						headerText="#{msg['colun.role']}" width="130"
+						styleClass="fonte-tamanho-12">
+
+						<h:outputText value="Administrador"
+							rendered="#{usuario.role == 'ROLE_ADMIN'}" />
+						<h:outputText value="Back Office"
+							rendered="#{usuario.role == 'ROLE_FUNCIONARIO'}" />
+						<h:outputText value="Financeiro"
+							rendered="#{usuario.role == 'ROLE_FINANCEIRO'}" />
+						<h:outputText value="Usuário do sistema"
+							rendered="#{usuario.role == 'ROLE_USUARIO'}" />
+					</p:column>
+
+					<p:column style="width:18px;text-align: center">
+						<p:commandButton style="width:18px;height:18px"
+							update="formAlterar" oncomplete="PF('alterarDlg').show()"
+							icon="ui-icon-pencil" title="Alterar">
+							<f:setPropertyActionListener value="#{usuario}"
+								target="#{crudUsuarioMB.usuarioSelecionado}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width:18px;text-align: center">
+						<p:commandButton style="width:18px;height:18px"
+							oncomplete="PF('excluirDlg').show()" icon="ui-icon-trash"
+							title="Deletar">
+							<f:setPropertyActionListener value="#{usuario}"
+								target="#{crudUsuarioMB.usuarioSelecionado}" />
+						</p:commandButton>
+					</p:column>
+
+					<!-- <f:facet name="footer">
+						<h:outputText
+							value="Encontrados #{crudParametroNegocioMB.quantidadeRegistro} registros."></h:outputText>
+					</f:facet> -->
+				</p:dataTable>
+			</h:form>
+
+			<p:dialog header="Excluir" width="25%" height="50%"
+				widgetVar="excluirDlg" modal="true" position="center"
+				resizable="false">
+				<h:form styleClass="fonte-tamanho-12">
+					<img align="left" width="48px" height="48px"
+						src="../imagens/Delete.png" />
+					<h:outputLabel
+						value="Tem certeza que deseja excluir o registro selecionado?"></h:outputLabel>
+					<h:panelGrid columns="2" style="margin-left: 34%; margin-top: 10%;">
+						<p:commandButton update="formTable:singleDT"
+							style="font-size:12px" value="#{msg['botao.confirmar']}"
+							icon="ui-icon-trash" oncomplete="PF('excluirDlg').hide()"
+							actionListener="#{crudUsuarioMB.removerUsuario()}" />
+						<p:commandButton style="font-size:12px"
+							value="#{msg['botao.calcelar']}"
+							icon="ui-icon-arrowreturnthick-1-w"
+							oncomplete="PF('excluirDlg').hide()" />
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+
+			<p:dialog header="Alterar Registro" widgetVar="alterarDlg"
+				modal="true" styleClass="fonte-tamanho-12" showEffect="fade"
+				hideEffect="fade" minHeight="200" minWidth="400" resizable="false">
+
+				<p:fieldset style="margin-bottom:20px">
+					<h:form id="formAlterar">
+						<h:panelGrid cellpadding="5" columns="2"
+							styleClass="fonte-tamanho-12">
+							<p:outputLabel value="#{msg['label.email']}" />
+							<h:inputText disabled="false" style="width:240px" maxlength="100"
+								value="#{crudUsuarioMB.usuarioSelecionado.email}"
+								required="true"
+								requiredMessage="Insira um email para o usuário!" />
+
+							<p:outputLabel value="#{msg['label.nome']}" />
+							<p:inputText style="width:300px" maxlength="256"
+								value="#{crudUsuarioMB.usuarioSelecionado.name}" required="true"
+								requiredMessage="Insira um nome para o usuário!" />
+
+							<p:outputLabel value="#{msg['label.nova.senha']}">
+							</p:outputLabel>
+							<p:selectOneMenu id="senhaN"
+								value="#{crudUsuarioMB.gerarNovaSenha}" style="width:110px">
+								<f:selectItem itemLabel="Selecione..." itemValue="" />
+								<f:selectItem itemLabel="Sim" itemValue="true" />
+								<f:selectItem itemLabel="Não" itemValue="false" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="#{msg['label.grupo']}" />
+							<p:selectOneMenu id="grupo"
+								value="#{crudUsuarioMB.usuarioSelecionado.role}"
+								style="width:125px">
+								<f:selectItem itemLabel="Selecione..." itemValue="" />
+								<f:selectItem itemLabel="Administrador" itemValue="ROLE_ADMIN" />
+								<f:selectItem itemLabel="Back Office"
+									itemValue="ROLE_FUNCIONARIO" />
+								<f:selectItem itemLabel="Financeiro" itemValue="ROLE_FINANCEIRO" />
+							</p:selectOneMenu>
+
+						</h:panelGrid>
+						<h:panelGrid columns="2" styleClass="fonte-tamanho-12">
+							<p:commandButton value="Alterar"
+								update="formTable:singleDT formAlterar"
+								actionListener="#{crudUsuarioMB.alterarUsuario()}"
+								oncomplete="PF('alterarDlg').hide()"
+								icon="ui-icon ui-icon-pencil" />
+
+							<p:commandButton value="Cancelar"
+								update="formTable:singleDT formAlterar"
+								oncomplete="PF('alterarDlg').hide()"
+								icon="ui-icon-arrowreturnthick-1-w" />
+						</h:panelGrid>
+					</h:form>
+
+				</p:fieldset>
+
+			</p:dialog>
+
+		</h:panelGrid>
+
+	</h:panelGrid>
+
+</h:body>
+</html>
